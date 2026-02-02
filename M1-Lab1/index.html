@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>M1 Lab 1</title>
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      min-height:100vh;
+      background: linear-gradient(135deg, #22c1c3, #fdbb2d);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+    .card{
+      width: min(950px, 100%);
+      background: rgba(255,255,255,0.92);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      padding: 22px;
+    }
+    h1{ margin:0 0 6px; color:#111827; }
+    p{ margin:0 0 14px; color:#374151; line-height:1.4; }
+    .status{
+      background:#111827;
+      color:white;
+      padding:10px 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    button{
+      border:none;
+      border-radius: 14px;
+      padding: 14px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor:pointer;
+      color:white;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+      transition: transform 0.08s ease;
+      text-align:left;
+    }
+    button:hover{ transform: translateY(-2px); }
+    .b1{ background: linear-gradient(135deg, #6366f1, #a855f7); }
+    .b2{ background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+    .b3{ background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .b4{ background: linear-gradient(135deg, #f97316, #ef4444); }
+    .b5{ background: linear-gradient(135deg, #14b8a6, #0ea5e9); }
+    .b6{ background: linear-gradient(135deg, #eab308, #f59e0b); }
+    .b7{ background: linear-gradient(135deg, #ec4899, #f43f5e); }
+    .b8{ background: linear-gradient(135deg, #0f172a, #334155); }
+
+    .results{
+      background: #0b1220;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 140px;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top: 10px;
+      flex-wrap:wrap;
+    }
+    .smallbtn{
+      background:#111827;
+      color:white;
+      border:none;
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 700;
+    }
+    .smallbtn:hover{ opacity: 0.9; }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>M1 Lab 1 - Trisha Hegde (Red ID: 133981806)</h1>
+    <p>Click a button to run a game. Results will appear below.</p>
+
+    <div class="status" id="status">Status: Waiting for you to pick a game…</div>
+
+    <div class="grid">
+      <button class="b1" onclick="runGame('js/01-larger-or-smaller.js')">01) Larger or Smaller</button>
+      <button class="b2" onclick="runGame('js/02-coinflip.js')">02) Coin Flip Game</button>
+      <button class="b3" onclick="runGame('js/03-coinflip-redux.js')">03) Coin Flip Redux</button>
+      <button class="b4" onclick="runGame('js/04-coinflip-streak.js')">04) Coin Flip Streak</button>
+      <button class="b5" onclick="runGame('js/05-triangle.js')">05) Triangle Loop</button>
+      <button class="b6" onclick="runGame('js/06-odd-or-even.js')">06) Odd or Even</button>
+      <button class="b7" onclick="runGame('js/07-marco-polo.js')">07) Marco! Polo!</button>
+      <button class="b8" onclick="runGame('js/08-countdown.js')">08) Countdown</button>
+    </div>
+
+    <div class="results" id="results">Results will show here…</div>
+
+    <div class="row">
+      <button class="smallbtn" onclick="clearResults()">Clear Results</button>
+    </div>
+  </div>
+
+  <script>
+    const resultsEl = document.getElementById("results");
+    const statusEl = document.getElementById("status");
+
+
+  
+
+    function setStatus(msg){
+      statusEl.textContent = "Status: " + msg;
+    }
+
+    function clearResults(){
+      resultsEl.textContent = "";
+      setStatus("Results cleared. Pick a game…");
+    }
+
+    function runGame(src){
+    
+      resultsEl.textContent = "";
+      setStatus("Running " + src + " …");
+
+     
+      const old = document.getElementById("game-script");
+      if (old) old.remove();
+
+    
+      const s = document.createElement("script");
+      s.id = "game-script";
+      s.src = src + "?v=" + Date.now();
+
+      s.onload = () => setStatus("Finished loading " + src + " ✅");
+      s.onerror = () => {
+        setStatus("ERROR loading " + src + " ❌");
+        resultsEl.textContent = "Could not load: " + src + "\nCheck the file name/path.";
+      };
+
+      document.body.appendChild(s);
+    }
+  </script>
+</body>
+</html>
